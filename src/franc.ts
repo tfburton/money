@@ -1,11 +1,11 @@
-import { Money } from "./types";
+import Money from "./money";
 
 export default class Franc implements Money {
   constructor(
     public readonly amount: number,
-    private readonly _currency: string
+    public readonly currency: string
   ) {}
-  public times(multiplier: number): Money {
-    return new Franc(this.amount * multiplier, "CHF");
+  public times(multiplier: number): Franc {
+    return Money.franc(this.amount * multiplier);
   }
 }

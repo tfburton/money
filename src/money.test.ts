@@ -1,5 +1,4 @@
 import Money from "./money";
-import { Dollar, Franc } from "./types";
 
 describe("dollar", () => {
   let classUnderTest: Money;
@@ -7,23 +6,35 @@ describe("dollar", () => {
 
   beforeEach(() => {
     amount = 12;
-    classUnderTest = new Dollar(amount, "USD");
+    classUnderTest = Money.dollar(amount);
   });
 
   it("should create", () => {
     expect(classUnderTest).toBeDefined();
   });
 
-  it("should compare equality", () => {
-    expect(new Dollar(5, "USD")).toEqual(new Dollar(5, "USD"));
-    expect(new Dollar(4, "USD")).not.toEqual(new Dollar(5, "USD"));
-    expect(new Dollar(4, "USD")).not.toEqual(new Franc(5, "CHF"));
-    expect(new Dollar(4, "USD")).not.toEqual(new Franc(4, "CHF"));
-    expect(new Franc(4, "CHF")).toEqual(new Franc(4, "CHF"));
+  describe("money equality", () => {
+    it("should compare dollars to dollars", () => {
+      expect(Money.dollar(5)).toEqual(Money.dollar(5));
+    });
+    it("should not compare dollars to francs", () => {
+      expect(Money.dollar(4)).not.toEqual(Money.franc(5));
+    });
+    it("should compare unequal dollars", () => {
+      expect(Money.dollar(4)).not.toEqual(Money.dollar(5));
+    });
+    it("should compare francs", () => {
+      expect(Money.franc(4)).toEqual(Money.franc(4));
+    });
+    it("should compare unequal francs", () => {
+      expect(Money.franc(1)).not.toEqual(Money.franc(4));
+    });
   });
 
-  it("should multiply", () => {
-    expect(new Dollar(5, "USD").times(2)).toEqual(new Dollar(10, "USD"));
-    expect(new Franc(3, "CHF").times(2)).toEqual(new Franc(6, "CHF"));
+  it("should multiply dollars", () => {
+    expect(Money.dollar(5).times(2)).toEqual(Money.dollar(10));
+  });
+  it("should multiply francs", () => {
+    expect(Money.franc(3).times(2)).toEqual(Money.franc(6));
   });
 });
