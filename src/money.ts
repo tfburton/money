@@ -1,15 +1,28 @@
-import { Dollar, Franc } from "./types";
+import Expression from "./expression";
+import Sum from "./sum";
 
-export default abstract class Money {
-  amount: number;
-  currency: string;
-  times: (multiplier: number) => Money;
+export default class Money {
+  constructor(
+    public readonly amount: number,
+    public readonly currency: string
+  ) {}
+  public times(multiplier: number): Money {
+    return new Money(this.amount * multiplier, this.currency);
+  }
 
   public static dollar(amount: number): Money {
-    return new Dollar(amount, "USD");
+    return new Money(amount, "USD");
   }
 
   public static franc(amount: number): Money {
-    return new Franc(amount, "CHF");
+    return new Money(amount, "CHF");
+  }
+
+  public plus(addend: Money): Expression {
+    return new Sum(this, addend);
+  }
+
+  public reduce(to: string): Money {
+    return this;
   }
 }
